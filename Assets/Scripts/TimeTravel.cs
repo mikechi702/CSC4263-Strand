@@ -8,9 +8,7 @@ public class TimeTravel : MonoBehaviour
     private GameObject userObject; //The player object being time travelled
     private string currentTime; //the timeslot the player is currently in
     private float startTime; //The time recorded when the time travel controls (Shift) starts.
-    private Vector2 currentPos; //Position of the player in current timeslot when time travel is executed
-    private Vector2[] playerPos = new Vector2[3]; //array containing all the player positions during time travel.
-    private bool isTravelling = false; //boolean used to determine if the player is within the timeLeap state
+    private Vector3 currentPos; //Position of the player in current timeslot when time travel is executed
     private InputAction timeLeap; //inputactions that enables the timeLeap state
 
     private TimeTravelling timeTravel; //awakens the time travel object.
@@ -33,27 +31,64 @@ public class TimeTravel : MonoBehaviour
         timeLeap.Disable();
     }
 
-    // Update is called once per frame
+    private Vector3[] playerPos = {Vector3.zero, Vector3.zero, Vector3.zero}; //array containing all the player positions during time travel.
+    private bool isTravelling = false; //boolean used to determine if the player is within the timeLeap state
+    [SerializeField]
+    private GameObject pastSpawn;
+    [SerializeField]
+    private GameObject futureSpawn;
+
     void Update()
     {
         if(isTravelling)
         {
-            if(Input.GetKey(KeyCode.Alpha1) && !currentTime.Equals("Past")) //turn this into a switch statement at some point for optimization
+            if(Input.GetKey(KeyCode.Alpha1) && !currentTime.Equals("Past"))
             {
                 Debug.Log("Travelling to the past");
+                positionSet(userObject.transform.position);
                 currentTime = "Past";
+
+                if(playerPos[0].Equals(Vector3.zero))
+                {
+                    Debug.Log("First time past teleport");
+                    userObject.transform.position = pastSpawn.transform.position;
+                }
+                else
+                {
+                    Debug.Log("Subsequent past teleports");
+                    userObject.transform.position = playerPos[0];
+                }
+
                 isTravelling = false;
             }
             else if(Input.GetKey(KeyCode.Alpha2) && !currentTime.Equals("Present"))
             {
                 Debug.Log("Travelling to the present");
+                positionSet(userObject.transform.position);
                 currentTime = "Present";
+
+                Debug.Log("Subsequent present teleports");
+                userObject.transform.position = playerPos[1];
+                
                 isTravelling = false;
             }
             else if(Input.GetKey(KeyCode.Alpha3) && !currentTime.Equals("Future"))
             {
                 Debug.Log("Travelling to the future");
+                positionSet(userObject.transform.position);
                 currentTime = "Future";
+
+                if(playerPos[2].Equals(Vector3.zero))
+                {
+                    Debug.Log("First time future teleport");
+                    userObject.transform.position = futureSpawn.transform.position;
+                }
+                else
+                {
+                    Debug.Log("Subsequent future teleports");
+                    userObject.transform.position = playerPos[2];
+                }
+
                 isTravelling = false;
             }
 
@@ -69,7 +104,25 @@ public class TimeTravel : MonoBehaviour
     {
         startTime = Time.time; //logs the time to measure
         Debug.Log("Time travel initiated");
+        currentPos = userObject.transform.position;
         isTravelling = true;
+    }
+
+    private void positionSet(Vector3 position)
+    {
+        switch(currentTime)
+        {
+            case "Past":
+                playerPos[0] = position;
+                break;
+            case "Present":
+                playerPos[1] = position;
+                break;
+            case "Future":
+                playerPos[2] = position;
+                break;
+        }
+
     }
 
 }
