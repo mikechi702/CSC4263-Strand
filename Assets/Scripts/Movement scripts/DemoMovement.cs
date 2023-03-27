@@ -6,6 +6,8 @@ public class DemoMovement : MonoBehaviour
 {
     [SerializeField]
     private Rigidbody2D demoBody;
+    [SerializeField]
+    private GameObject myGameObject;
 
     [SerializeField]
     private float roverSpeed;
@@ -23,5 +25,14 @@ public class DemoMovement : MonoBehaviour
     {
         moving = Input.GetAxis("Horizontal");
         demoBody.velocity = new Vector2(roverSpeed * moving, demoBody.velocity.y);
+
+        if(moving > 0)
+        {
+            myGameObject.transform.localScale = new Vector3(1, 1, 1);
+        }
+        else if(moving < 0)
+        {
+            myGameObject.transform.localScale = new Vector3(-1, 1, 1);
+        }
     }
 }

@@ -25,12 +25,14 @@ public class PickupScript : MonoBehaviour
                 isGrabbed.collider.gameObject.transform.parent = objHolder;
                 isGrabbed.collider.gameObject.transform.position = objHolder.position;
                 isGrabbed.collider.gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
+                Debug.Log("Picking up object");
                 isHolding = true;
             }
             else if(Input.GetKeyDown(KeyCode.E) && isHolding == true)
             {
                 isGrabbed.collider.gameObject.transform.parent = null;
                 isGrabbed.collider.gameObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                Debug.Log("Object dropped");
                 isHolding = false;
             }
         }
