@@ -14,7 +14,7 @@ public class portalScript : MonoBehaviour
             switch(currentScene.name) //Whenever new level is added, ADD IT TO THHE BUILD SETTINGS !!!
             {
                 case("SampleScene"):
-                    SceneManager.LoadScene("SampleScene2");
+                    SceneManager.LoadScene("EndScreen");
                     break;
                 case("SampleScene2"):
                     SceneManager.LoadScene("TitleScreen");

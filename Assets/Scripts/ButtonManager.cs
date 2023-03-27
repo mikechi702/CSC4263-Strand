@@ -10,6 +10,7 @@ public class ButtonManager : MonoBehaviour
     }
 
     public void QuitGame() {
+        Debug.Log("Game successfully exited");
         Application.Quit();
     }
 
