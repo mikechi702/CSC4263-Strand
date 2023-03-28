@@ -5,21 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class portalScript : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other) 
+    void OnTriggerEnter2D(Collider2D other)
     {
         Scene currentScene = SceneManager.GetActiveScene();
 
-        if(other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            switch(currentScene.name) //Whenever new level is added, ADD IT TO THHE BUILD SETTINGS !!!
+            switch (currentScene.name) //Whenever new level is added, ADD IT TO THHE BUILD SETTINGS !!!
             {
-                case("SampleScene"):
-                    SceneManager.LoadScene("EndScreen");
+                case ("SampleScene"):
+                    StartCoroutine(LoadLevelAsync("EndScreen"));
                     break;
-                case("SampleScene2"):
-                    SceneManager.LoadScene("TitleScreen");
+                case ("SampleScene2"):
+                    StartCoroutine(LoadLevelAsync("TitleScreen"));
                     break;
             }
+        }
+    }
+
+    IEnumerator LoadLevelAsync(string scene)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+
+        while (!asyncLoad.isDone)
+        {
+            Debug.Log("Loading progress: " + (asyncLoad.progress * 100) + "%");
+
+            yield return null;
         }
     }
 }
