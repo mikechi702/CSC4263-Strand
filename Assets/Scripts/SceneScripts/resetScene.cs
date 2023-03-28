@@ -7,7 +7,7 @@ public class resetScene : MonoBehaviour
 {
     private Scene currentScene;
     private bool resetting = false;
-    private float startTime;
+    private float startTime = 0.0f;
 
     private void Awake() {
         currentScene = SceneManager.GetActiveScene();
@@ -34,10 +34,11 @@ public class resetScene : MonoBehaviour
             Debug.Log("Scene reset");
         }
 
-        if(Time.time - startTime > 3.0) //aborts time travel if 3 seconds have passed
+        if(Time.time - startTime > 3.0 && startTime != 0.0f) //aborts time travel if 3 seconds have passed
         {
-                resetting = false;
-                Debug.Log("Scene reset aborted");
+            resetting = false;
+            Debug.Log("Scene reset aborted");
+            startTime = 0.0f;
         }
     }
 }
