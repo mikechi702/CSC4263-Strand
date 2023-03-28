@@ -36,6 +36,7 @@ public class resetScene : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.P) && resetting == true)
         {
+            Debug.Log("Application successfully closed");
             Application.Quit();
         }
 
