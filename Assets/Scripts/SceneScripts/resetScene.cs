@@ -7,55 +7,38 @@ public class resetScene : MonoBehaviour
 {
     private Scene currentScene;
     private bool resetting = false;
-    private float startTime;
+    private float startTime = 0.0f;
 
-    private void Awake()
-    {
+    private void Awake() {
         currentScene = SceneManager.GetActiveScene();
         resetting = false;
     }
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if(Input.GetKeyDown(KeyCode.LeftControl))
         {
             Debug.Log("Reset scene state initialized");
             resetting = true;
             startTime = Time.time;
         }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        if(Input.GetKeyDown(KeyCode.L) && resetting == true)
         {
-            Debug.Log("Reset scene state stopped");
-            resetting = false;
-        }
-        if (Input.GetKeyDown(KeyCode.L) && resetting == true)
-        {
-            StartCoroutine(LoadLevelAsync(currentScene.name)); //resets the level just in case...
+            SceneManager.LoadScene(currentScene.name); //resets the level just in case...
             Debug.Log("Scene reset");
         }
 
-        if (Time.time - startTime > 3.0) //aborts time travel if 3 seconds have passed
+        if(Time.time - startTime > 3.0 && startTime != 0.0f) //aborts time travel if 3 seconds have passed
         {
             resetting = false;
             Debug.Log("Scene reset aborted");
-        }
-    }
-
-    IEnumerator LoadLevelAsync(string scene)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
-
-        while (!asyncLoad.isDone)
-        {
-            Debug.Log("Loading progress: " + (asyncLoad.progress * 100) + "%");
-
-            yield return null;
+            startTime = 0.0f;
         }
     }
 }
