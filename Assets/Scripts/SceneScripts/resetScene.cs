@@ -34,6 +34,12 @@ public class resetScene : MonoBehaviour
             Debug.Log("Scene reset");
         }
 
+        if(Input.GetKeyDown(KeyCode.P) && resetting == true)
+        {
+            Debug.Log("Application successfully closed");
+            Application.Quit();
+        }
+
         if(Time.time - startTime > 3.0 && startTime != 0.0f) //aborts time travel if 3 seconds have passed
         {
             resetting = false;
