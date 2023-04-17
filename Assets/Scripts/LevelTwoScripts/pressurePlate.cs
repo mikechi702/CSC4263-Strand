@@ -14,34 +14,38 @@ public class pressurePlate : MonoBehaviour
     [SerializeField]
     private GameObject pastCube, presentCube, futureCube; //the cubes that spawn when pressure plate is down
     private Rigidbody2D presCubeRb;
-    private bool wasReversed = true;
+    private bool wasReversed = false;
 
-    private void OnCollisionEnter2D(Collision2D other) 
+    public pressurePlate()
+    {
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) 
     {
         if(plate.name == "PastPlate")
         {
             if(other.gameObject.CompareTag("Player"))
             {
                 moveUp = false;
-                other.transform.parent = transform;
                 //plate.GetComponent<SpriteRenderer>().color = Color.red;
                 Debug.Log("Standing on plate");
 
                 pastCube.SetActive(true);
                 presentCube.SetActive(true);
                 futureCube.SetActive(true);
+
             }
         }
         else if(plate.name == "PresentPlateGrav")
         {
             if(other.gameObject.CompareTag("Player"))
             {
-                other.transform.parent = transform;
                 //plate.GetComponent<SpriteRenderer>().color = Color.red;
                 Debug.Log("Standing on plate");
                 if(presentCube.activeSelf)
                 {
-                    presCubeRb.gravityScale *= -2; //reverses gravity when player steps on this plate.
+                    presCubeRb.gravityScale = -1.0f; //reverses gravity when player steps on this plate.
                 }
                 else
                     Debug.Log("Present cube not spawned!");
@@ -50,16 +54,15 @@ public class pressurePlate : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D other) {
+    private void OnTriggerExit2D(Collider2D other) {
         if(other.gameObject.CompareTag("Player"))
         {
-            other.transform.parent = null;
             //plate.GetComponent<SpriteRenderer>().color = Color.green;
             Debug.Log("Stepping off plate");
 
             if(plate.name == "PresentPlateGrav")
             {
-                presCubeRb.gravityScale *= -0.5f;
+                gravTime = Time.time;
                 wasReversed = true;
             }
 
@@ -68,12 +71,17 @@ public class pressurePlate : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay2D(Collision2D other) {
+    private void OnTriggerStay2D(Collider2D other) {
         if(other.gameObject.CompareTag("Player"))
         {
             plate.transform.Translate(0,pressWeight,0);
-            Debug.Log("Sitting on plate");
+        //    Debug.Log("Sitting on plate");
         }
+    }
+
+    public bool getReversed()
+    {
+        return wasReversed;
     }
     private void Awake() {
         presCubeRb = presentCube.GetComponent<Rigidbody2D>();
@@ -92,10 +100,19 @@ public class pressurePlate : MonoBehaviour
     {
         if(moveUp)
         {
-            if(transform.position.y < initialPos.y && Time.time - startTime > 3.0)
+            if(transform.position.y < initialPos.y && Time.time - startTime > 3.0f)
                 transform.Translate(0, -pressWeight, 0);
             else if(transform.position.y >= initialPos.y)
                 moveUp = false;
+        }
+
+        if(wasReversed)
+        {
+            if(Time.time - gravTime > 3.0f)
+            {
+                presCubeRb.gravityScale = 1.0f;
+                presentCube.tag = "reversed";
+            }
         }
     }
 }
