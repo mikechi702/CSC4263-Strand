@@ -8,8 +8,6 @@ public class FPDistort : MonoBehaviour
     private GameObject presentCube, futureCube;
     [SerializeField]
     private GameObject wallDistPres, wallDistPresNode, wallDistFut;
-
-    [SerializeField]
     private FirstWallDistortion FPEffect;
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.CompareTag("Pickup"))

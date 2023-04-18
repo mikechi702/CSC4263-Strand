@@ -10,6 +10,7 @@ TagManager:
   - fertileSoil
   - wallbreak
   - reversed
+  - BigBlock
   layers:
   - Default
   - TransparentFX

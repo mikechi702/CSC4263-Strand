@@ -59,13 +59,14 @@ public class pressurePlate : MonoBehaviour
         {
             //plate.GetComponent<SpriteRenderer>().color = Color.green;
             Debug.Log("Stepping off plate");
-
-            if(plate.name == "PresentPlateGrav")
+            if(presentCube.activeSelf)
             {
-                gravTime = Time.time;
-                wasReversed = true;
+                if(plate.name == "PresentPlateGrav")
+                {
+                    gravTime = Time.time;
+                    wasReversed = true;
+                }
             }
-
             startTime = Time.time;
             moveUp = true;
         }
