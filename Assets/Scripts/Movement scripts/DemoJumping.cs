@@ -6,11 +6,8 @@ public class DemoJumping : MonoBehaviour
 {
     [SerializeField]
     private Rigidbody2D myRigidBody; //the rigid body handling the physics
-
-
     [SerializeField]
     private float jumpSpeed; //a global variable that allows modification of the jumpspeed
-
     private bool isAirborne;
 
     // Start is called before the first frame update
@@ -30,11 +27,11 @@ public class DemoJumping : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Ground"))
             isAirborne = false;
-        // if(other.gameObject.CompareTag("wingFlight"))
-        // {
-        //     isAirborne = false;
-        //     hasWings = true;
-        // }
+    }
+
+    private void OnCollisionStay2D(Collision2D other) {
+        if(other.gameObject.CompareTag("Ground") && isAirborne == true)
+            isAirborne = false;
     }
 
     private void OnCollisionExit2D(Collision2D other) //used to detect if the player is not jumping

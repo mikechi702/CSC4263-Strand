@@ -8,6 +8,9 @@ TagManager:
   - Ground
   - fallingBlock
   - fertileSoil
+  - wallbreak
+  - reversed
+  - BigBlock
   layers:
   - Default
   - TransparentFX
