@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class blockFall : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class blockFall : MonoBehaviour
         if(other.gameObject.CompareTag("Player"))
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
+            if(SceneManager.GetActiveScene().name == "SampleScene2")
+                rb.gravityScale = -1.0f;
         }
     }
     

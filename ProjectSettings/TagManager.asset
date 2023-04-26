@@ -11,6 +11,7 @@ TagManager:
   - wallbreak
   - reversed
   - BigBlock
+  - distorted
   layers:
   - Default
   - TransparentFX

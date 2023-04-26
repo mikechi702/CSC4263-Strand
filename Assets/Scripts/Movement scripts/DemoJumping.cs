@@ -25,18 +25,18 @@ public class DemoJumping : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) //used to detect if the player is on the ground, for jumping
     {
-        if(other.gameObject.CompareTag("Ground"))
+        if(other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("fallingBlock"))
             isAirborne = false;
     }
 
     private void OnCollisionStay2D(Collision2D other) {
-        if(other.gameObject.CompareTag("Ground") && isAirborne == true)
+        if((other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("fallingBlock"))&& isAirborne == true)
             isAirborne = false;
     }
 
     private void OnCollisionExit2D(Collision2D other) //used to detect if the player is not jumping
     {
-        if(other.gameObject.CompareTag("Ground"))
+        if(other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("fallingBlock"))
         {
             isAirborne = true;
         }
