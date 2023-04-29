@@ -12,7 +12,7 @@ public class pressurePlate : MonoBehaviour
     private bool moveUp = false; //determines if pressure plate needs to move back up
     private float startTime, gravTime; //time buffer if pressure plate moves up
     [SerializeField]
-    private GameObject pastCube, presentCube, futureCube; //the cubes that spawn when pressure plate is down
+    private GameObject pastCube, presentCube, futureCube, wallDistFut; //the cubes that spawn when pressure plate is down
     private Rigidbody2D presCubeRb;
     private bool wasReversed = false;
 
@@ -112,7 +112,10 @@ public class pressurePlate : MonoBehaviour
             if(Time.time - gravTime > 3.0f)
             {
                 presCubeRb.gravityScale = 1.0f;
-                presentCube.tag = "reversed";
+                if(wallDistFut == null)
+                    presentCube.tag = "reversed";
+                else
+                    wasReversed = false;
             }
         }
     }

@@ -20,10 +20,16 @@ public class FirstWallDistortion : DistortionEffect
         wallDistFut = wDF;
     }
 
+    // public bool getDistorted()
+    // {
+    //     return wasDistorted;
+    // }
+
     public override void apply(Collider2D effector)
     {
         Debug.Log("Cube positions distorting!");
         presentCube.transform.position = wallDistPresNode.transform.position;
         Destroy(wallDistFut);
+    //    wallDistFut.tag = "distorted";
     }
 }
