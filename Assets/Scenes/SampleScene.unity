@@ -2832,7 +2832,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c4967b874e27a744bb64baedd951ffec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2926,6 +2926,7 @@ MonoBehaviour:
   userObject: {fileID: 960894425}
   pastSpawn: {fileID: 1081812024}
   futureSpawn: {fileID: 84179631}
+  timeShader: {fileID: 2100000, guid: c4967b874e27a744bb64baedd951ffec, type: 2}
 --- !u!114 &960894434
 MonoBehaviour:
   m_ObjectHideFlags: 0
