@@ -13,12 +13,6 @@ public class TimeTravel : MonoBehaviour
 
     private TimeTravelling timeTravel; //awakens the time travel object.
 
-    private void Awake() //called at the beginning of the scene i think
-    {
-        timeTravel = new TimeTravelling();
-        currentTime = "Present";
-    }
-
     private void OnEnable() //execution of the time travel mechanic.
     {
         timeLeap = timeTravel.Player.TimeSlotLeap;
@@ -34,9 +28,18 @@ public class TimeTravel : MonoBehaviour
     private Vector3[] playerPos = {Vector3.zero, Vector3.zero, Vector3.zero}; //array containing all the player positions during time travel.
     private bool isTravelling = false; //boolean used to determine if the player is within the timeLeap state
     [SerializeField]
-    private GameObject pastSpawn;
+    private GameObject pastSpawn; //the initial spawn locations in past and future the player will go to on first time travel
     [SerializeField]
     private GameObject futureSpawn;
+    [SerializeField]
+    private Material timeShader;
+
+    private void Awake() //called at the beginning of the scene i think
+    {
+        timeTravel = new TimeTravelling();
+        currentTime = "Present";
+        timeShader.SetColor("_Color", Color.yellow * 25);
+    }
 
     void Update()
     {
@@ -47,6 +50,7 @@ public class TimeTravel : MonoBehaviour
                 Debug.Log("Travelling to the past");
                 positionSet(userObject.transform.position);
                 currentTime = "Past";
+                timeShader.SetColor("_Color", Color.green * 25);
 
                 if(playerPos[0].Equals(Vector3.zero))
                 {
@@ -66,6 +70,7 @@ public class TimeTravel : MonoBehaviour
                 Debug.Log("Travelling to the present");
                 positionSet(userObject.transform.position);
                 currentTime = "Present";
+                timeShader.SetColor("_Color", Color.yellow * 25);
 
                 Debug.Log("Subsequent present teleports");
                 userObject.transform.position = playerPos[1];
@@ -77,6 +82,7 @@ public class TimeTravel : MonoBehaviour
                 Debug.Log("Travelling to the future");
                 positionSet(userObject.transform.position);
                 currentTime = "Future";
+                timeShader.SetColor("_Color", new Color(143, 0, 254, 1)); //purple
 
                 if(playerPos[2].Equals(Vector3.zero))
                 {
@@ -100,15 +106,15 @@ public class TimeTravel : MonoBehaviour
         }
     }
 
-    private void TimeSlotLeap(InputAction.CallbackContext timeContext)
+    private void TimeSlotLeap(InputAction.CallbackContext timeContext) //logic that starts the time travel state FSM
     {
         startTime = Time.time; //logs the time to measure
         Debug.Log("Time travel initiated");
-        currentPos = userObject.transform.position;
+        currentPos = userObject.transform.position; //logs the position 
         isTravelling = true;
     }
 
-    private void positionSet(Vector3 position)
+    private void positionSet(Vector3 position) //logs the previous timeslots position upon player time travel
     {
         switch(currentTime)
         {
