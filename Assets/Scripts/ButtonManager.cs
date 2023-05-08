@@ -13,6 +13,14 @@ public class ButtonManager : MonoBehaviour
         StartCoroutine(LoadSceneAsync("SampleScene"));
     }
 
+    public void LevelSelect() {
+        StartCoroutine(LoadSceneAsync("LevelSelect"));
+    }
+
+    public void SelectLevel2() {
+        StartCoroutine(LoadSceneAsync("SampleScene2"));
+    }
+
     public void QuitGame() {
         Application.Quit();
     }
