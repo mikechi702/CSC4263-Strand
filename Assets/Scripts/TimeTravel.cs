@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
 public class TimeTravel : MonoBehaviour
 {
     [SerializeField]
@@ -12,6 +13,10 @@ public class TimeTravel : MonoBehaviour
     private InputAction timeLeap; //inputactions that enables the timeLeap state
 
     private TimeTravelling timeTravel; //awakens the time travel object.
+
+    AudioSource source;
+    public VisualEffect effect;
+
 
     private void OnEnable() //execution of the time travel mechanic.
     {
@@ -39,12 +44,18 @@ public class TimeTravel : MonoBehaviour
         timeTravel = new TimeTravelling();
         currentTime = "Present";
         timeShader.SetColor("_Color", Color.yellow * 25);
+        source = GetComponent<AudioSource>();
     }
 
     void Update()
     {
         if(isTravelling)
         {
+
+            //play sound and effect
+            source.Play();
+            effect.Play();
+
             if(Input.GetKey(KeyCode.Alpha1) && !currentTime.Equals("Past"))
             {
                 Debug.Log("Travelling to the past");
