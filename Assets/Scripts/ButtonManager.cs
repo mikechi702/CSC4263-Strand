@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ButtonManager : MonoBehaviour
 {
     public GameObject pauseMenu;
     public GameObject pause;
+    public GameObject loadingScreen;
     private Scene currentScene;
 
     public void StartGame() {
@@ -15,10 +17,6 @@ public class ButtonManager : MonoBehaviour
 
     public void LevelSelect() {
         StartCoroutine(LoadSceneAsync("LevelSelect"));
-    }
-
-    public void SelectLevel2() {
-        StartCoroutine(LoadSceneAsync("SampleScene2"));
     }
 
     public void QuitGame() {
@@ -47,11 +45,14 @@ public class ButtonManager : MonoBehaviour
     }
 
     IEnumerator LoadSceneAsync(string scene) {
+        loadingScreen.SetActive(true);
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
         Time.timeScale = 1;
+        Slider progressBar = loadingScreen.transform.Find("RawImage").Find("Slider").gameObject.GetComponent<Slider>();
 
         while (!asyncLoad.isDone) {
             Debug.Log("Loading progress: " + (asyncLoad.progress * 100) + "%");
+            progressBar.value = Mathf.Clamp01(asyncLoad.progress / 0.9f);
 
             yield return null;
         }
