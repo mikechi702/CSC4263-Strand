@@ -2,50 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class ResetScene : MonoBehaviour
+public class PortalScript : MonoBehaviour
 {
     public GameObject loadingScreen;
-    private Scene currentScene;
-    private bool resetting = false;
-    private float startTime;
 
-    private void Awake()
+    void OnTriggerEnter2D(Collider2D other)
     {
-        currentScene = SceneManager.GetActiveScene();
-        resetting = false;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
+        Scene currentScene = SceneManager.GetActiveScene();
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Reset scene state initialized");
-            resetting = true;
-            startTime = Time.time;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
-        {
-            Debug.Log("Reset scene state stopped");
-            resetting = false;
-        }
-        if (Input.GetKeyDown(KeyCode.L) && resetting == true)
-        {
-            StartCoroutine(LoadLevelAsync(currentScene.name)); //resets the level just in case...
-            Debug.Log("Scene reset");
-        }
-
-        if (Time.time - startTime > 3.0) //aborts time travel if 3 seconds have passed
-        {
-            resetting = false;
-            Debug.Log("Scene reset aborted");
+            switch (currentScene.name) //Whenever new level is added, ADD IT TO THHE BUILD SETTINGS !!!
+            {
+                case ("SampleScene"):
+                    StartCoroutine(LoadLevelAsync("SampleScene2"));
+                    break;
+                case ("SampleScene2"):
+                    StartCoroutine(LoadLevelAsync("TitleScreen"));
+                    break;
+            }
         }
     }
 
