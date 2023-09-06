@@ -23,21 +23,25 @@ public class ButtonManager : MonoBehaviour
 
     public void QuitGame() {
         Application.Quit();
+        Debug.Log("Application exited");
     }
 
     public void PauseGame() {
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
         gameObject.SetActive(false);
         pauseMenu.SetActive(true);
+        Debug.Log("Application paused");
     }
 
     public void ResumeGame() {
-        Time.timeScale = 1;
-        transform.parent.gameObject.SetActive(false);
+        Time.timeScale = 1f;
+        pauseMenu.SetActive(false);
         pause.SetActive(true);
+        Cursor.visible = false;
     }
 
     public void RestartLevel() {
+        Debug.Log("Restart level");
         currentScene = SceneManager.GetActiveScene();
         StartCoroutine(LoadSceneAsync(currentScene.name));
     }
