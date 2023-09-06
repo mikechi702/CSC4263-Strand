@@ -2,66 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class ResetScene : MonoBehaviour
+public class resetScene : MonoBehaviour
 {
-    public GameObject loadingScreen;
     private Scene currentScene;
     private bool resetting = false;
-    private float startTime;
+    private float startTime = 0.0f;
 
-    private void Awake()
-    {
+    private void Awake() {
         currentScene = SceneManager.GetActiveScene();
         resetting = false;
     }
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if(Input.GetKeyDown(KeyCode.LeftControl))
         {
             Debug.Log("Reset scene state initialized");
             resetting = true;
             startTime = Time.time;
         }
-        else if (Input.GetKeyUp(KeyCode.LeftControl))
+        if(Input.GetKeyDown(KeyCode.L) && resetting == true)
         {
-            Debug.Log("Reset scene state stopped");
-            resetting = false;
-        }
-        if (Input.GetKeyDown(KeyCode.L) && resetting == true)
-        {
-            StartCoroutine(LoadLevelAsync(currentScene.name)); //resets the level just in case...
+            SceneManager.LoadScene(currentScene.name); //resets the level just in case...
             Debug.Log("Scene reset");
         }
 
-        if (Time.time - startTime > 3.0) //aborts time travel if 3 seconds have passed
+        if(Input.GetKeyDown(KeyCode.P) && resetting == true)
+        {
+            Debug.Log("Application successfully closed");
+            Application.Quit();
+        }
+
+        if(Time.time - startTime > 3.0 && startTime != 0.0f) //aborts time travel if 3 seconds have passed
         {
             resetting = false;
             Debug.Log("Scene reset aborted");
-        }
-    }
-
-    IEnumerator LoadLevelAsync(string scene)
-    {
-        loadingScreen.SetActive(true);
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
-        Time.timeScale = 1;
-        Slider progressBar = loadingScreen.transform.Find("RawImage").Find("Slider").gameObject.GetComponent<Slider>();
-
-        while (!asyncLoad.isDone)
-        {
-            Debug.Log("Loading progress: " + (asyncLoad.progress * 100) + "%");
-            progressBar.value = Mathf.Clamp01(asyncLoad.progress / 0.9f);
-
-            yield return null;
+            startTime = 0.0f;
         }
     }
 }
